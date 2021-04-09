@@ -1,0 +1,5 @@
+#!/usr/bin/env bash
+
+PLATFORM_ROOT="$(dirname "$(dirname "$(readlink -fm "$0")")")"
+
+docker-compose -f "$PLATFORM_ROOT"/docker-compose.yml up -d

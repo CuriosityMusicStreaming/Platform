@@ -1,0 +1,13 @@
+#!/usr/bin/env bash
+
+TAG=master
+GO_TOOLS_IMAGE=go-tools:$TAG
+
+docker run \
+  --rm \
+  -it \
+  --name "GoTools-$TAG" \
+  -w "$PWD" \
+  -v "$PWD":"$PWD" \
+  $GO_TOOLS_IMAGE \
+  "$@"

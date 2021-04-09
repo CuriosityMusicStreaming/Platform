@@ -1,0 +1,38 @@
+version: "3.3"
+
+services:
+    api-gateway:
+        image: vadimmakerov/apigateway:master
+        container_name: apigateway
+        environment:
+            SERVE_REST_ADDRESS: :8001
+            CONTENT_SERVICE_GRPC_ADDRESS: contentservice:8002
+        ports:
+            - 8001:8001
+
+    contentservice:
+        image: vadimmakerov/contentservice:master
+        container_name: contentservice
+        depends_on:
+            - db
+            - api-gateway
+        environment:
+            CONTENTSERVICE_DSN: root:1234@/contentservice
+            SERVE_REST_ADDRESS: :8001
+            SERVE_GRPC_ADDRESS: :8002
+
+    db:
+        image: percona
+        container_name: services-db
+        environment:
+            MYSQL_ROOT_PASSWORD: 1234
+        ports:
+            - 3306:3306
+        healthcheck:
+            test: mysql -h127.0.0.1 -uroot -p1234 -e 'SELECT 1'
+            interval: 20s
+            timeout: 1s
+        networks:
+            default:
+                aliases:
+                    - contentservice-db

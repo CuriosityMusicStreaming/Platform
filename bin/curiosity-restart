@@ -5,8 +5,8 @@ PLATFORM_ROOT="$(dirname "$(dirname "$(readlink -fm "$0")")")"
 # shellcheck disable=SC2086
 pushd $PLATFORM_ROOT > /dev/null || exit
 
-./bin/curiosity-down.sh || exit
+./bin/curiosity-down || exit
 
-./bin/curiosity-up.sh || exit
+./bin/curiosity-up || exit
 
 popd > /dev/null || exit

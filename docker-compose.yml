@@ -15,11 +15,19 @@ services:
         container_name: contentservice
         depends_on:
             - db
+            - rabbitmq
             - api-gateway
         environment:
             CONTENTSERVICE_DSN: root:1234@/contentservice
             SERVE_REST_ADDRESS: :8001
             SERVE_GRPC_ADDRESS: :8002
+            DB_USER: root
+            DB_PASSWORD: 1234
+            DB_HOST: contentservice-db
+            DB_NAME: contentservice
+            AMQP_HOST: rabbitmq
+            AMQP_USER: guest
+            AMQP_PASSWORD: guest
 
     db:
         image: percona
@@ -39,5 +47,15 @@ services:
                 aliases:
                     - contentservice-db
 
+    rabbitmq:
+        image: "rabbitmq:3.8-management"
+        container_name: services-rabbitmq
+        hostname: services-rabbitmq
+        ports:
+            - "15672:15672"
+        volumes:
+            - "mq:/var/lib/rabbitmq/mnesia"
+
 volumes:
     db:
+    mq:

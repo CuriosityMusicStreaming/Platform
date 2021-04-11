@@ -2,7 +2,7 @@ version: "3.3"
 
 services:
     api-gateway:
-        image: vadimmakerov/apigateway:master
+        image: ${REGISTRY}-apigateway:master
         container_name: apigateway
         environment:
             SERVE_REST_ADDRESS: :8001
@@ -11,7 +11,7 @@ services:
             - 8001:8001
 
     contentservice:
-        image: vadimmakerov/contentservice:master
+        image: ${REGISTRY}-contentservice:master
         container_name: contentservice
         depends_on:
             - db
@@ -20,6 +20,18 @@ services:
             CONTENTSERVICE_DSN: root:1234@/contentservice
             SERVE_REST_ADDRESS: :8001
             SERVE_GRPC_ADDRESS: :8002
+
+    userservice:
+        image: ${REGISTRY}-userservice:master
+        container_name: userservice
+        depends_on:
+            - db
+            - api-gateway
+        environment:
+            CONTENTSERVICE_DSN: root:1234@/userservice
+            SERVE_REST_ADDRESS: :8001
+            SERVE_GRPC_ADDRESS: :8002
+
 
     db:
         image: percona
@@ -38,6 +50,7 @@ services:
             default:
                 aliases:
                     - contentservice-db
+                    - userservice-db
 
 volumes:
     db:

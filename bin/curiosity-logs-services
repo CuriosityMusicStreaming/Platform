@@ -6,6 +6,6 @@ join() {
 
 PLATFORM_ROOT="$(dirname "$(dirname "$(readlink -fm "$0")")")"
 
-SERVICES=(contentservice api-gateway)
+SERVICES=(contentservice api-gateway userservice)
 
 docker-compose -f "$PLATFORM_ROOT"/docker-compose.yml logs -f $(join ' ' "${SERVICES[@]}")

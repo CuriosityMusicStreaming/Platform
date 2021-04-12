@@ -1,0 +1,3 @@
+CREATE DATABASE IF NOT EXISTS contentservice CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+CREATE DATABASE IF NOT EXISTS userservice CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+CREATE DATABASE IF NOT EXISTS playlistservice CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;

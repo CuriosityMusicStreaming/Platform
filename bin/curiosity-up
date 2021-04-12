@@ -4,6 +4,15 @@ PLATFORM_ROOT="$(dirname "$(dirname "$(readlink -fm "$0")")")"
 
 pushd "$PLATFORM_ROOT" > /dev/null || exit
 
+docker-compose up -d db rabbitmq
+
+"$PLATFORM_ROOT/scripts/wait-for-containers.sh" services-db
+
+docker exec \
+  --interactive \
+  services-db \
+  mysql -uroot -p1234 < "$PLATFORM_ROOT"/data/mysql/init_db.sql || exit
+
 docker-compose up -d
 
 popd > /dev/null || exit

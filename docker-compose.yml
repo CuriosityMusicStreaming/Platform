@@ -4,6 +4,9 @@ services:
     api-gateway:
         image: ${REGISTRY}-apigateway:master
         container_name: apigateway
+        depends_on:
+            - contentservice
+            - userservice
         environment:
             SERVE_REST_ADDRESS: :8001
             CONTENT_SERVICE_GRPC_ADDRESS: contentservice:8002
@@ -17,7 +20,7 @@ services:
         depends_on:
             - db
             - rabbitmq
-            - api-gateway
+            - userservice
         environment:
             CONTENTSERVICE_DSN: root:1234@/contentservice
             SERVE_REST_ADDRESS: :8001
@@ -29,18 +32,24 @@ services:
             AMQP_HOST: rabbitmq
             AMQP_USER: guest
             AMQP_PASSWORD: guest
+            USER_SERVICE_GRPC_ADDRESS: userservice:8002
 
     userservice:
         image: ${REGISTRY}-userservice:master
         container_name: userservice
         depends_on:
             - db
-            - api-gateway
         environment:
             CONTENTSERVICE_DSN: root:1234@/userservice
             SERVE_REST_ADDRESS: :8001
             SERVE_GRPC_ADDRESS: :8002
-
+            DB_USER: root
+            DB_PASSWORD: 1234
+            DB_HOST: contentservice-db
+            DB_NAME: contentservice
+            AMQP_HOST: rabbitmq
+            AMQP_USER: guest
+            AMQP_PASSWORD: guest
 
     db:
         image: percona

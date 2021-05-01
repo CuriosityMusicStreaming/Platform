@@ -1,0 +1,22 @@
+#!/usr/bin/env bash
+
+IMAGE_NAME=vadimmakerov/apisynchronizer:master
+CACHE_DIR=/tmp/apisynchronizer
+USER=$(whoami)
+SSH_KEYS="/home/$USER/.ssh"
+USER_ID=$(id -u "$USER")
+PASSWD=/etc/passwd
+
+docker run \
+  --rm \
+  --name "apisynchronizer" \
+  --interactive \
+  --tty \
+  -v "$PWD":"$PWD" \
+  -v "$CACHE_DIR":"$CACHE_DIR" \
+  -v "$SSH_KEYS":"$SSH_KEYS" \
+  -v "$PASSWD":"$PASSWD" \
+  -u "$USER_ID" \
+  -w "$PWD" \
+  $IMAGE_NAME \
+  "$@"

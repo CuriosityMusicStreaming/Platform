@@ -1,7 +1,10 @@
 #!/usr/bin/env bash
 
+PLATFORM_ROOT="$(dirname "$(dirname "$(readlink -fm "$0")")")"
+PLATFORM_CACHE="$PLATFORM_ROOT/cache"
+
 IMAGE_NAME=vadimmakerov/apisynchronizer:master
-CACHE_DIR=/tmp/apisynchronizer
+CACHE_DIR=/tmp
 USER=$(whoami)
 SSH_KEYS="/home/$USER/.ssh"
 USER_ID=$(id -u "$USER")
@@ -13,7 +16,7 @@ docker run \
   --interactive \
   --tty \
   -v "$PWD":"$PWD" \
-  -v "$CACHE_DIR":"$CACHE_DIR" \
+  -v "$PLATFORM_CACHE":"$CACHE_DIR" \
   -v "$SSH_KEYS":"$SSH_KEYS" \
   -v "$PASSWD":"$PASSWD" \
   -u "$USER_ID" \

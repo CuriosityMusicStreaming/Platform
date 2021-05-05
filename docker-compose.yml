@@ -7,10 +7,12 @@ services:
         depends_on:
             - contentservice
             - userservice
+            - playlistservice
         environment:
             SERVE_REST_ADDRESS: :8001
             CONTENT_SERVICE_GRPC_ADDRESS: contentservice:8002
             USER_SERVICE_GRPC_ADDRESS: userservice:8002
+            PLAYLIST_SERVICE_GRPC_ADDRESS: playlistservice:8002
         ports:
             - 8001:8001
 
@@ -22,7 +24,6 @@ services:
             - rabbitmq
             - userservice
         environment:
-            CONTENTSERVICE_DSN: root:1234@/contentservice
             SERVE_REST_ADDRESS: :8001
             SERVE_GRPC_ADDRESS: :8002
             DB_USER: root
@@ -39,14 +40,32 @@ services:
         container_name: userservice
         depends_on:
             - db
+            - rabbitmq
         environment:
-            CONTENTSERVICE_DSN: root:1234@/userservice
             SERVE_REST_ADDRESS: :8001
             SERVE_GRPC_ADDRESS: :8002
             DB_USER: root
             DB_PASSWORD: 1234
-            DB_HOST: contentservice-db
-            DB_NAME: contentservice
+            DB_HOST: userservice-db
+            DB_NAME: userservice
+            AMQP_HOST: rabbitmq
+            AMQP_USER: guest
+            AMQP_PASSWORD: guest
+
+    playlistservice:
+        image: ${REGISTRY}-playlistservice:master
+        container_name: playlistservice
+        depends_on:
+            - db
+            - contentservice
+            - rabbitmq
+        environment:
+            SERVE_REST_ADDRESS: :8001
+            SERVE_GRPC_ADDRESS: :8002
+            DB_USER: root
+            DB_PASSWORD: 1234
+            DB_HOST: playlistservice-db
+            DB_NAME: playlistservice
             AMQP_HOST: rabbitmq
             AMQP_USER: guest
             AMQP_PASSWORD: guest
@@ -69,6 +88,7 @@ services:
                 aliases:
                     - contentservice-db
                     - userservice-db
+                    - playlistservice-db
 
     rabbitmq:
         image: "rabbitmq:3.8-management"

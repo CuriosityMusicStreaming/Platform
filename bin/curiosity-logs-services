@@ -6,7 +6,7 @@ join() {
 
 PLATFORM_ROOT="$(dirname "$(dirname "$(readlink -fm "$0")")")"
 
-SERVICES=(contentservice api-gateway userservice)
+SERVICES=(contentservice api-gateway userservice playlistservice)
 
 pushd "$PLATFORM_ROOT" > /dev/null || exit
 

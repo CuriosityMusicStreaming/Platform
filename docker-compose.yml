@@ -69,6 +69,7 @@ services:
             AMQP_HOST: rabbitmq
             AMQP_USER: guest
             AMQP_PASSWORD: guest
+            CONTENT_SERVICE_GRPC_ADDRESS: contentservice:8002
 
     db:
         image: percona

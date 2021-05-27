@@ -13,6 +13,7 @@ services:
             CONTENT_SERVICE_GRPC_ADDRESS: contentservice:8002
             USER_SERVICE_GRPC_ADDRESS: userservice:8002
             PLAYLIST_SERVICE_GRPC_ADDRESS: playlistservice:8002
+            AUTHENTICATION_SERVICE_GRPC_ADDRESS: authenticationservice:8002
         ports:
             - 8001:8001
 
@@ -33,7 +34,7 @@ services:
             AMQP_HOST: rabbitmq
             AMQP_USER: guest
             AMQP_PASSWORD: guest
-            USER_SERVICE_GRPC_ADDRESS: userservice:8002
+            AUTHORIZATION_SERVICE_GRPC_ADDRESS: authorizationservice:8002
 
     userservice:
         image: ${REGISTRY}-userservice:master
@@ -51,6 +52,12 @@ services:
             AMQP_HOST: rabbitmq
             AMQP_USER: guest
             AMQP_PASSWORD: guest
+        networks:
+            default:
+                aliases:
+                    - authenticationservice
+                    - authorizationservice
+
 
     playlistservice:
         image: ${REGISTRY}-playlistservice:master

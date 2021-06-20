@@ -46,7 +46,7 @@ downloads microservices images from docker hub if not found locally
 
 ### Commands
 
-`./bin/curiosity-up` - up platform
-`./bin/curiosity-down` - stop platform
-`./bin/curiosity-restart` - restart platform
-`./bin/curiosity-logs-services` - watch services logs
+* `./bin/curiosity-up` - up platform
+* `./bin/curiosity-down` - stop platform
+* `./bin/curiosity-restart` - restart platform
+* `./bin/curiosity-logs-services` - watch services logs
